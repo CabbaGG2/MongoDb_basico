@@ -26,6 +26,7 @@ fun main() {
     }
 }
 
+//suspend significa que esta función puede ser llamada desde una coroutine, sino necesita ejecutarse en un contexto coroutine no se ejecutara
 suspend fun setupConnection(
     databaseName: String? = null // Parámetro opcional: permite sobrescribir el nombre de la BD
 ): MongoDatabase? {
@@ -48,6 +49,7 @@ suspend fun setupConnection(
     val password = dotenv["MONGODB_PASSWORD"] ?: System.getenv("MONGODB_PASSWORD")
 
     // Construye la cadena de conexión según si hay credenciales disponibles
+    // utiliza un when dentro de una variable para dar robustez al código
     val connectString = when {
         user != null && password != null -> "mongodb+srv://$user:$password@$host/?retryWrites=true&w=majority"
         else -> "mongodb+srv://<username>:<password>@cluster0.xxxxxx.mongodb.net/?retryWrites=true&w=majority"
